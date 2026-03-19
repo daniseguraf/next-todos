@@ -1,8 +1,10 @@
 import prisma from '@/app/lib/prisma'
 import { NextResponse } from 'next/server'
+import * as yup from 'yup'
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
+
   const take = Number(searchParams.get('take') || '10')
   const skip = Number(searchParams.get('skip') || '0')
 
@@ -11,21 +13,32 @@ export async function GET(request: Request) {
   }
 
   const todos = await prisma.todo.findMany({
-    take,
     skip,
+    take,
   })
 
   return NextResponse.json(todos)
 }
 
-export async function POST(request: Request) {
-  const { description } = await request.json()
-
-  console.log('description', description)
-
-  const todo = await prisma.todo.create({
-    data: { description },
+const postSchema = yup
+  .object({
+    description: yup.string().required(),
+    completed: yup.boolean().optional().default(false),
   })
+  .noUnknown(true, 'No se permiten propiedades adicionales')
+  .strict(true)
 
-  return NextResponse.json(todo)
+export async function POST(request: Request) {
+  try {
+    const body = await postSchema.validate(await request.json())
+
+    const todo = await prisma.todo.create({
+      data: body,
+    })
+
+    return NextResponse.json(todo)
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+  }
 }
