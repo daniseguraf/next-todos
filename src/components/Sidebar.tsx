@@ -1,24 +1,40 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import {
-  CiBellOn,
-  CiBookmarkCheck,
-  CiChat1,
-  CiLogout,
-  CiMenuBurger,
-  CiSearch,
-} from 'react-icons/ci'
+import { CiLogout } from 'react-icons/ci'
 import { SidebarItem } from './SidebarItem'
+import {
+  IoCalendarNumber,
+  IoCheckboxOutline,
+  IoListOutline,
+} from 'react-icons/io5'
+
+const sidebarItems = [
+  {
+    icon: <IoCalendarNumber size={20} />,
+    title: 'Dashboard',
+    path: '/dashboard',
+  },
+  {
+    icon: <IoCheckboxOutline size={20} />,
+    title: 'REST Todos',
+    path: '/dashboard/rest-todos',
+  },
+  {
+    icon: <IoListOutline size={20} />,
+    title: 'Server Todos',
+    path: '/dashboard/server-todos',
+  },
+]
 
 export const Sidebar = () => {
   return (
     <aside className="ml-[-100%] fixed z-10 top-0 pb-3 px-6 w-full flex flex-col justify-between h-screen border-r bg-white transition duration-300 md:w-4/12 lg:ml-0 lg:w-[25%] xl:w-[20%] 2xl:w-[15%]">
       <div>
         <div className="-mx-6 px-6 py-4">
-          {/* TODO: Next/Link hacia dashboard */}
           <Link href="/dashboard">
             <Image
               src="https://picsum.photos/100/40"
+              className="w-32"
               width={100}
               height={40}
               alt="tailus logo"
@@ -42,8 +58,14 @@ export const Sidebar = () => {
         </div>
 
         <ul className="space-y-2 tracking-wide mt-8">
-          {/* Active className: text-white bg-gradient-to-r from-sky-600 to-cyan-400 */}
-          <SidebarItem />
+          {sidebarItems.map((item) => (
+            <SidebarItem
+              key={item.path}
+              path={item.path}
+              icon={item.icon}
+              title={item.title}
+            />
+          ))}
         </ul>
       </div>
 
