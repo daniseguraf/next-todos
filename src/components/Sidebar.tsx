@@ -22,7 +22,7 @@ const sidebarItems = [
   {
     icon: <IoListOutline size={20} />,
     title: 'Server Todos',
-    path: '/dashboard/server-todos',
+    path: '/dashboard/server-actions',
   },
 ]
 

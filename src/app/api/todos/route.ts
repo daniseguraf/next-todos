@@ -15,6 +15,9 @@ export async function GET(request: Request) {
   const todos = await prisma.todo.findMany({
     skip,
     take,
+    orderBy: {
+      createdAt: 'asc',
+    },
   })
 
   return NextResponse.json(todos)
@@ -41,4 +44,12 @@ export async function POST(request: Request) {
     console.error(error)
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
   }
+}
+
+export async function DELETE() {
+  const todos = await prisma.todo.deleteMany({
+    where: { completed: true },
+  })
+
+  return NextResponse.json(todos)
 }

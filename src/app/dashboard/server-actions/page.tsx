@@ -1,16 +1,13 @@
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
-
 import prisma from '@/app/lib/prisma'
 import { NewTodo } from '@/todos/NewTodo'
 import { TodosGrid } from '@/todos/TodosGrid'
 
-const RestTodosPage = async () => {
+const ServerActionsPage = async () => {
   const todos = await prisma.todo.findMany()
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-10">Rest Todos</h1>
+      <h1 className="text-3xl font-bold mb-10">Server Actions</h1>
       <div className="w-full px-3 mx-5 mb-5">
         <NewTodo />
       </div>
@@ -20,4 +17,4 @@ const RestTodosPage = async () => {
   )
 }
 
-export default RestTodosPage
+export default ServerActionsPage
